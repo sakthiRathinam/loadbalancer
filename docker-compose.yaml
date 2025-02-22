@@ -3,7 +3,36 @@ version: '3'
 services:
   app:
     build:
-      context: .
-      dockerfile: servers/Dockerfile
+      context: servers
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    networks:
+      mynetwork:
+        ipv4_address: 10.0.0.5
+  app2:
+    build:
+      context: servers
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    networks:
+      mynetwork:
+        ipv4_address: 10.0.0.2
+  app3:
+    build:
+      context: servers
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    networks:
+      mynetwork:
+        ipv4_address: 10.0.0.3
+
+
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
