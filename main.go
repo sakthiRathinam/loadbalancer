@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 )
@@ -8,6 +9,16 @@ import (
 func main() {
 	startTCPServer()
 }
+
+// type server struct {
+// 	address        string
+// 	headers        map[string]interface{}
+// 	healthCheckURL string
+// 	active         bool
+// }
+// type loadbalancer struct {
+// 	servers []string
+// }
 
 func startTCPServer() {
 	listener, err := net.Listen("tcp", ":8080")
@@ -27,4 +38,13 @@ func startTCPServer() {
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
+
+	buffer := make([]byte, 1024)
+	for {
+		_, err := conn.Read(buffer)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(buffer))
+	}
 }
